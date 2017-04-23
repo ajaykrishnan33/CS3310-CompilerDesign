@@ -1,0 +1,1768 @@
+State 83 conflicts: 11 shift/reduce
+
+
+Grammar
+
+    0 $accept: Goal $end
+
+    1 Goal: MainClass TypeDeclarationList
+
+    2 MainClass: CLASS IDENTIFIER OPEN_CURLY PUBLIC STATIC VOID MAIN OPEN_PAREN STRING OPEN_BOX CLOSED_BOX IDENTIFIER CLOSED_PAREN OPEN_CURLY PRINT_FN OPEN_PAREN expression CLOSED_PAREN SEMICOLON CLOSED_CURLY CLOSED_CURLY
+
+    3 TypeDeclarationList: %empty
+    4                    | TypeDeclarationList TypeDeclaration
+
+    5 TypeDeclaration: CLASS IDENTIFIER OPEN_CURLY variable_declaration_list method_declaration_list CLOSED_CURLY
+    6                | CLASS IDENTIFIER EXTENDS IDENTIFIER OPEN_CURLY variable_declaration_list method_declaration_list CLOSED_CURLY
+
+    7 variable_declaration: TYPE IDENTIFIER
+
+    8 variable_declaration_list: %empty
+    9                          | variable_declaration_list variable_declaration SEMICOLON
+
+   10 argument_list: %empty
+   11              | variable_declaration extra_arguments
+
+   12 extra_arguments: %empty
+   13                | extra_arguments COMMA variable_declaration
+
+   14 method_declaration_list: %empty
+   15                        | method_declaration_list method_declaration
+
+   16 method_content: %empty
+   17               | INBUILT_TYPE IDENTIFIER SEMICOLON method_content
+   18               | IDENTIFIER follows_identifier_in_method
+   19               | other_statement statement_list
+
+   20 follows_identifier_in_method: follows_identifier_in_statement statement_list
+   21                             | IDENTIFIER SEMICOLON method_content
+
+   22 method_declaration: PUBLIC TYPE IDENTIFIER OPEN_PAREN argument_list CLOSED_PAREN OPEN_CURLY method_content RETURN expression SEMICOLON CLOSED_CURLY
+
+   23 INBUILT_TYPE: INTEGER_TYPE OPEN_BOX CLOSED_BOX
+   24             | INTEGER_TYPE
+   25             | BOOLEAN_TYPE
+
+   26 TYPE: INBUILT_TYPE
+   27     | IDENTIFIER
+
+   28 statement_list: %empty
+   29               | statement_list statement
+
+   30 other_statement: PRINT_FN OPEN_PAREN expression CLOSED_PAREN SEMICOLON
+   31                | WHILE OPEN_PAREN expression CLOSED_PAREN statement
+   32                | IF OPEN_PAREN expression CLOSED_PAREN statement ELSE statement
+   33                | IF OPEN_PAREN expression CLOSED_PAREN statement
+
+   34 follows_identifier_in_statement: EQUALS expression SEMICOLON
+   35                                | OPEN_BOX expression CLOSED_BOX EQUALS expression SEMICOLON
+
+   36 statement: OPEN_CURLY statement_list CLOSED_CURLY
+   37          | IDENTIFIER follows_identifier_in_statement
+   38          | other_statement
+
+   39 function_call: IDENTIFIER OPEN_PAREN parameter_list CLOSED_PAREN
+
+   40 parameter_list: %empty
+   41               | expression extra_parameter_list
+
+   42 extra_parameter_list: %empty
+   43                     | extra_parameter_list COMMA expression
+
+   44 expression: prim_exp follows_primexp
+
+   45 follows_primexp: AND prim_exp
+   46                | OR prim_exp
+   47                | NOT EQUALS prim_exp
+   48                | LESS_THAN EQUALS prim_exp
+   49                | PLUS prim_exp
+   50                | MINUS prim_exp
+   51                | MULT prim_exp
+   52                | DIV prim_exp
+   53                | OPEN_BOX prim_exp CLOSED_BOX
+   54                | DOTLENGTH
+   55                | %empty
+   56                | DOT function_call
+
+   57 prim_exp: INTEGER_LITERAL
+   58         | TRUE_LITERAL
+   59         | FALSE_LITERAL
+   60         | IDENTIFIER
+   61         | THIS
+   62         | NEW INTEGER_TYPE OPEN_BOX expression CLOSED_BOX
+   63         | NEW IDENTIFIER OPEN_PAREN CLOSED_PAREN
+   64         | NOT expression
+   65         | OPEN_PAREN expression CLOSED_PAREN
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+INTEGER_LITERAL (258) 57
+IDENTIFIER (259) 2 5 6 7 17 18 21 22 27 37 39 60 63
+PLUS (260) 49
+MINUS (261) 50
+MULT (262) 51
+DIV (263) 52
+EQUALS (264) 34 35 47 48
+NOT (265) 47 64
+AND (266) 45
+OR (267) 46
+LESS_THAN (268) 48
+DOT (269) 56
+OPEN_PAREN (270) 2 22 30 31 32 33 39 63 65
+OPEN_BOX (271) 2 23 35 53 62
+CLOSED_BOX (272) 2 23 35 53 62
+OPEN_CURLY (273) 2 5 6 22 36
+CLOSED_CURLY (274) 2 5 6 22 36
+CLASS (275) 2 5 6
+PUBLIC (276) 2 22
+STATIC (277) 2
+VOID (278) 2
+MAIN (279) 2
+PRINT_FN (280) 2 30
+RETURN (281) 22
+INTEGER_TYPE (282) 23 24 62
+BOOLEAN_TYPE (283) 25
+IF (284) 32 33
+WHILE (285) 31
+TRUE_LITERAL (286) 58
+FALSE_LITERAL (287) 59
+THIS (288) 61
+NEW (289) 62 63
+DOTLENGTH (290) 54
+SEMICOLON (291) 2 9 17 21 22 30 34 35
+COMMA (292) 13 43
+STRING (293) 2
+EXTENDS (294) 6
+CLOSED_PAREN (295) 2 22 30 31 32 33 39 63 65
+ELSE (296) 32
+
+
+Nonterminals, with rules where they appear
+
+$accept (42)
+    on left: 0
+Goal (43)
+    on left: 1, on right: 0
+MainClass (44)
+    on left: 2, on right: 1
+TypeDeclarationList (45)
+    on left: 3 4, on right: 1 4
+TypeDeclaration (46)
+    on left: 5 6, on right: 4
+variable_declaration (47)
+    on left: 7, on right: 9 11 13
+variable_declaration_list (48)
+    on left: 8 9, on right: 5 6 9
+argument_list (49)
+    on left: 10 11, on right: 22
+extra_arguments (50)
+    on left: 12 13, on right: 11 13
+method_declaration_list (51)
+    on left: 14 15, on right: 5 6 15
+method_content (52)
+    on left: 16 17 18 19, on right: 17 21 22
+follows_identifier_in_method (53)
+    on left: 20 21, on right: 18
+method_declaration (54)
+    on left: 22, on right: 15
+INBUILT_TYPE (55)
+    on left: 23 24 25, on right: 17 26
+TYPE (56)
+    on left: 26 27, on right: 7 22
+statement_list (57)
+    on left: 28 29, on right: 19 20 29 36
+other_statement (58)
+    on left: 30 31 32 33, on right: 19 38
+follows_identifier_in_statement (59)
+    on left: 34 35, on right: 20 37
+statement (60)
+    on left: 36 37 38, on right: 29 31 32 33
+function_call (61)
+    on left: 39, on right: 56
+parameter_list (62)
+    on left: 40 41, on right: 39
+extra_parameter_list (63)
+    on left: 42 43, on right: 41 43
+expression (64)
+    on left: 44, on right: 2 22 30 31 32 33 34 35 41 43 62 64 65
+follows_primexp (65)
+    on left: 45 46 47 48 49 50 51 52 53 54 55 56, on right: 44
+prim_exp (66)
+    on left: 57 58 59 60 61 62 63 64 65, on right: 44 45 46 47 48 49
+    50 51 52 53
+
+
+State 0
+
+    0 $accept: . Goal $end
+
+    CLASS  shift, and go to state 1
+
+    Goal       go to state 2
+    MainClass  go to state 3
+
+
+State 1
+
+    2 MainClass: CLASS . IDENTIFIER OPEN_CURLY PUBLIC STATIC VOID MAIN OPEN_PAREN STRING OPEN_BOX CLOSED_BOX IDENTIFIER CLOSED_PAREN OPEN_CURLY PRINT_FN OPEN_PAREN expression CLOSED_PAREN SEMICOLON CLOSED_CURLY CLOSED_CURLY
+
+    IDENTIFIER  shift, and go to state 4
+
+
+State 2
+
+    0 $accept: Goal . $end
+
+    $end  shift, and go to state 5
+
+
+State 3
+
+    1 Goal: MainClass . TypeDeclarationList
+
+    $default  reduce using rule 3 (TypeDeclarationList)
+
+    TypeDeclarationList  go to state 6
+
+
+State 4
+
+    2 MainClass: CLASS IDENTIFIER . OPEN_CURLY PUBLIC STATIC VOID MAIN OPEN_PAREN STRING OPEN_BOX CLOSED_BOX IDENTIFIER CLOSED_PAREN OPEN_CURLY PRINT_FN OPEN_PAREN expression CLOSED_PAREN SEMICOLON CLOSED_CURLY CLOSED_CURLY
+
+    OPEN_CURLY  shift, and go to state 7
+
+
+State 5
+
+    0 $accept: Goal $end .
+
+    $default  accept
+
+
+State 6
+
+    1 Goal: MainClass TypeDeclarationList .
+    4 TypeDeclarationList: TypeDeclarationList . TypeDeclaration
+
+    CLASS  shift, and go to state 8
+
+    $default  reduce using rule 1 (Goal)
+
+    TypeDeclaration  go to state 9
+
+
+State 7
+
+    2 MainClass: CLASS IDENTIFIER OPEN_CURLY . PUBLIC STATIC VOID MAIN OPEN_PAREN STRING OPEN_BOX CLOSED_BOX IDENTIFIER CLOSED_PAREN OPEN_CURLY PRINT_FN OPEN_PAREN expression CLOSED_PAREN SEMICOLON CLOSED_CURLY CLOSED_CURLY
+
+    PUBLIC  shift, and go to state 10
+
+
+State 8
+
+    5 TypeDeclaration: CLASS . IDENTIFIER OPEN_CURLY variable_declaration_list method_declaration_list CLOSED_CURLY
+    6                | CLASS . IDENTIFIER EXTENDS IDENTIFIER OPEN_CURLY variable_declaration_list method_declaration_list CLOSED_CURLY
+
+    IDENTIFIER  shift, and go to state 11
+
+
+State 9
+
+    4 TypeDeclarationList: TypeDeclarationList TypeDeclaration .
+
+    $default  reduce using rule 4 (TypeDeclarationList)
+
+
+State 10
+
+    2 MainClass: CLASS IDENTIFIER OPEN_CURLY PUBLIC . STATIC VOID MAIN OPEN_PAREN STRING OPEN_BOX CLOSED_BOX IDENTIFIER CLOSED_PAREN OPEN_CURLY PRINT_FN OPEN_PAREN expression CLOSED_PAREN SEMICOLON CLOSED_CURLY CLOSED_CURLY
+
+    STATIC  shift, and go to state 12
+
+
+State 11
+
+    5 TypeDeclaration: CLASS IDENTIFIER . OPEN_CURLY variable_declaration_list method_declaration_list CLOSED_CURLY
+    6                | CLASS IDENTIFIER . EXTENDS IDENTIFIER OPEN_CURLY variable_declaration_list method_declaration_list CLOSED_CURLY
+
+    OPEN_CURLY  shift, and go to state 13
+    EXTENDS     shift, and go to state 14
+
+
+State 12
+
+    2 MainClass: CLASS IDENTIFIER OPEN_CURLY PUBLIC STATIC . VOID MAIN OPEN_PAREN STRING OPEN_BOX CLOSED_BOX IDENTIFIER CLOSED_PAREN OPEN_CURLY PRINT_FN OPEN_PAREN expression CLOSED_PAREN SEMICOLON CLOSED_CURLY CLOSED_CURLY
+
+    VOID  shift, and go to state 15
+
+
+State 13
+
+    5 TypeDeclaration: CLASS IDENTIFIER OPEN_CURLY . variable_declaration_list method_declaration_list CLOSED_CURLY
+
+    $default  reduce using rule 8 (variable_declaration_list)
+
+    variable_declaration_list  go to state 16
+
+
+State 14
+
+    6 TypeDeclaration: CLASS IDENTIFIER EXTENDS . IDENTIFIER OPEN_CURLY variable_declaration_list method_declaration_list CLOSED_CURLY
+
+    IDENTIFIER  shift, and go to state 17
+
+
+State 15
+
+    2 MainClass: CLASS IDENTIFIER OPEN_CURLY PUBLIC STATIC VOID . MAIN OPEN_PAREN STRING OPEN_BOX CLOSED_BOX IDENTIFIER CLOSED_PAREN OPEN_CURLY PRINT_FN OPEN_PAREN expression CLOSED_PAREN SEMICOLON CLOSED_CURLY CLOSED_CURLY
+
+    MAIN  shift, and go to state 18
+
+
+State 16
+
+    5 TypeDeclaration: CLASS IDENTIFIER OPEN_CURLY variable_declaration_list . method_declaration_list CLOSED_CURLY
+    9 variable_declaration_list: variable_declaration_list . variable_declaration SEMICOLON
+
+    IDENTIFIER    shift, and go to state 19
+    INTEGER_TYPE  shift, and go to state 20
+    BOOLEAN_TYPE  shift, and go to state 21
+
+    $default  reduce using rule 14 (method_declaration_list)
+
+    variable_declaration     go to state 22
+    method_declaration_list  go to state 23
+    INBUILT_TYPE             go to state 24
+    TYPE                     go to state 25
+
+
+State 17
+
+    6 TypeDeclaration: CLASS IDENTIFIER EXTENDS IDENTIFIER . OPEN_CURLY variable_declaration_list method_declaration_list CLOSED_CURLY
+
+    OPEN_CURLY  shift, and go to state 26
+
+
+State 18
+
+    2 MainClass: CLASS IDENTIFIER OPEN_CURLY PUBLIC STATIC VOID MAIN . OPEN_PAREN STRING OPEN_BOX CLOSED_BOX IDENTIFIER CLOSED_PAREN OPEN_CURLY PRINT_FN OPEN_PAREN expression CLOSED_PAREN SEMICOLON CLOSED_CURLY CLOSED_CURLY
+
+    OPEN_PAREN  shift, and go to state 27
+
+
+State 19
+
+   27 TYPE: IDENTIFIER .
+
+    $default  reduce using rule 27 (TYPE)
+
+
+State 20
+
+   23 INBUILT_TYPE: INTEGER_TYPE . OPEN_BOX CLOSED_BOX
+   24             | INTEGER_TYPE .
+
+    OPEN_BOX  shift, and go to state 28
+
+    $default  reduce using rule 24 (INBUILT_TYPE)
+
+
+State 21
+
+   25 INBUILT_TYPE: BOOLEAN_TYPE .
+
+    $default  reduce using rule 25 (INBUILT_TYPE)
+
+
+State 22
+
+    9 variable_declaration_list: variable_declaration_list variable_declaration . SEMICOLON
+
+    SEMICOLON  shift, and go to state 29
+
+
+State 23
+
+    5 TypeDeclaration: CLASS IDENTIFIER OPEN_CURLY variable_declaration_list method_declaration_list . CLOSED_CURLY
+   15 method_declaration_list: method_declaration_list . method_declaration
+
+    CLOSED_CURLY  shift, and go to state 30
+    PUBLIC        shift, and go to state 31
+
+    method_declaration  go to state 32
+
+
+State 24
+
+   26 TYPE: INBUILT_TYPE .
+
+    $default  reduce using rule 26 (TYPE)
+
+
+State 25
+
+    7 variable_declaration: TYPE . IDENTIFIER
+
+    IDENTIFIER  shift, and go to state 33
+
+
+State 26
+
+    6 TypeDeclaration: CLASS IDENTIFIER EXTENDS IDENTIFIER OPEN_CURLY . variable_declaration_list method_declaration_list CLOSED_CURLY
+
+    $default  reduce using rule 8 (variable_declaration_list)
+
+    variable_declaration_list  go to state 34
+
+
+State 27
+
+    2 MainClass: CLASS IDENTIFIER OPEN_CURLY PUBLIC STATIC VOID MAIN OPEN_PAREN . STRING OPEN_BOX CLOSED_BOX IDENTIFIER CLOSED_PAREN OPEN_CURLY PRINT_FN OPEN_PAREN expression CLOSED_PAREN SEMICOLON CLOSED_CURLY CLOSED_CURLY
+
+    STRING  shift, and go to state 35
+
+
+State 28
+
+   23 INBUILT_TYPE: INTEGER_TYPE OPEN_BOX . CLOSED_BOX
+
+    CLOSED_BOX  shift, and go to state 36
+
+
+State 29
+
+    9 variable_declaration_list: variable_declaration_list variable_declaration SEMICOLON .
+
+    $default  reduce using rule 9 (variable_declaration_list)
+
+
+State 30
+
+    5 TypeDeclaration: CLASS IDENTIFIER OPEN_CURLY variable_declaration_list method_declaration_list CLOSED_CURLY .
+
+    $default  reduce using rule 5 (TypeDeclaration)
+
+
+State 31
+
+   22 method_declaration: PUBLIC . TYPE IDENTIFIER OPEN_PAREN argument_list CLOSED_PAREN OPEN_CURLY method_content RETURN expression SEMICOLON CLOSED_CURLY
+
+    IDENTIFIER    shift, and go to state 19
+    INTEGER_TYPE  shift, and go to state 20
+    BOOLEAN_TYPE  shift, and go to state 21
+
+    INBUILT_TYPE  go to state 24
+    TYPE          go to state 37
+
+
+State 32
+
+   15 method_declaration_list: method_declaration_list method_declaration .
+
+    $default  reduce using rule 15 (method_declaration_list)
+
+
+State 33
+
+    7 variable_declaration: TYPE IDENTIFIER .
+
+    $default  reduce using rule 7 (variable_declaration)
+
+
+State 34
+
+    6 TypeDeclaration: CLASS IDENTIFIER EXTENDS IDENTIFIER OPEN_CURLY variable_declaration_list . method_declaration_list CLOSED_CURLY
+    9 variable_declaration_list: variable_declaration_list . variable_declaration SEMICOLON
+
+    IDENTIFIER    shift, and go to state 19
+    INTEGER_TYPE  shift, and go to state 20
+    BOOLEAN_TYPE  shift, and go to state 21
+
+    $default  reduce using rule 14 (method_declaration_list)
+
+    variable_declaration     go to state 22
+    method_declaration_list  go to state 38
+    INBUILT_TYPE             go to state 24
+    TYPE                     go to state 25
+
+
+State 35
+
+    2 MainClass: CLASS IDENTIFIER OPEN_CURLY PUBLIC STATIC VOID MAIN OPEN_PAREN STRING . OPEN_BOX CLOSED_BOX IDENTIFIER CLOSED_PAREN OPEN_CURLY PRINT_FN OPEN_PAREN expression CLOSED_PAREN SEMICOLON CLOSED_CURLY CLOSED_CURLY
+
+    OPEN_BOX  shift, and go to state 39
+
+
+State 36
+
+   23 INBUILT_TYPE: INTEGER_TYPE OPEN_BOX CLOSED_BOX .
+
+    $default  reduce using rule 23 (INBUILT_TYPE)
+
+
+State 37
+
+   22 method_declaration: PUBLIC TYPE . IDENTIFIER OPEN_PAREN argument_list CLOSED_PAREN OPEN_CURLY method_content RETURN expression SEMICOLON CLOSED_CURLY
+
+    IDENTIFIER  shift, and go to state 40
+
+
+State 38
+
+    6 TypeDeclaration: CLASS IDENTIFIER EXTENDS IDENTIFIER OPEN_CURLY variable_declaration_list method_declaration_list . CLOSED_CURLY
+   15 method_declaration_list: method_declaration_list . method_declaration
+
+    CLOSED_CURLY  shift, and go to state 41
+    PUBLIC        shift, and go to state 31
+
+    method_declaration  go to state 32
+
+
+State 39
+
+    2 MainClass: CLASS IDENTIFIER OPEN_CURLY PUBLIC STATIC VOID MAIN OPEN_PAREN STRING OPEN_BOX . CLOSED_BOX IDENTIFIER CLOSED_PAREN OPEN_CURLY PRINT_FN OPEN_PAREN expression CLOSED_PAREN SEMICOLON CLOSED_CURLY CLOSED_CURLY
+
+    CLOSED_BOX  shift, and go to state 42
+
+
+State 40
+
+   22 method_declaration: PUBLIC TYPE IDENTIFIER . OPEN_PAREN argument_list CLOSED_PAREN OPEN_CURLY method_content RETURN expression SEMICOLON CLOSED_CURLY
+
+    OPEN_PAREN  shift, and go to state 43
+
+
+State 41
+
+    6 TypeDeclaration: CLASS IDENTIFIER EXTENDS IDENTIFIER OPEN_CURLY variable_declaration_list method_declaration_list CLOSED_CURLY .
+
+    $default  reduce using rule 6 (TypeDeclaration)
+
+
+State 42
+
+    2 MainClass: CLASS IDENTIFIER OPEN_CURLY PUBLIC STATIC VOID MAIN OPEN_PAREN STRING OPEN_BOX CLOSED_BOX . IDENTIFIER CLOSED_PAREN OPEN_CURLY PRINT_FN OPEN_PAREN expression CLOSED_PAREN SEMICOLON CLOSED_CURLY CLOSED_CURLY
+
+    IDENTIFIER  shift, and go to state 44
+
+
+State 43
+
+   22 method_declaration: PUBLIC TYPE IDENTIFIER OPEN_PAREN . argument_list CLOSED_PAREN OPEN_CURLY method_content RETURN expression SEMICOLON CLOSED_CURLY
+
+    IDENTIFIER    shift, and go to state 19
+    INTEGER_TYPE  shift, and go to state 20
+    BOOLEAN_TYPE  shift, and go to state 21
+
+    $default  reduce using rule 10 (argument_list)
+
+    variable_declaration  go to state 45
+    argument_list         go to state 46
+    INBUILT_TYPE          go to state 24
+    TYPE                  go to state 25
+
+
+State 44
+
+    2 MainClass: CLASS IDENTIFIER OPEN_CURLY PUBLIC STATIC VOID MAIN OPEN_PAREN STRING OPEN_BOX CLOSED_BOX IDENTIFIER . CLOSED_PAREN OPEN_CURLY PRINT_FN OPEN_PAREN expression CLOSED_PAREN SEMICOLON CLOSED_CURLY CLOSED_CURLY
+
+    CLOSED_PAREN  shift, and go to state 47
+
+
+State 45
+
+   11 argument_list: variable_declaration . extra_arguments
+
+    $default  reduce using rule 12 (extra_arguments)
+
+    extra_arguments  go to state 48
+
+
+State 46
+
+   22 method_declaration: PUBLIC TYPE IDENTIFIER OPEN_PAREN argument_list . CLOSED_PAREN OPEN_CURLY method_content RETURN expression SEMICOLON CLOSED_CURLY
+
+    CLOSED_PAREN  shift, and go to state 49
+
+
+State 47
+
+    2 MainClass: CLASS IDENTIFIER OPEN_CURLY PUBLIC STATIC VOID MAIN OPEN_PAREN STRING OPEN_BOX CLOSED_BOX IDENTIFIER CLOSED_PAREN . OPEN_CURLY PRINT_FN OPEN_PAREN expression CLOSED_PAREN SEMICOLON CLOSED_CURLY CLOSED_CURLY
+
+    OPEN_CURLY  shift, and go to state 50
+
+
+State 48
+
+   11 argument_list: variable_declaration extra_arguments .
+   13 extra_arguments: extra_arguments . COMMA variable_declaration
+
+    COMMA  shift, and go to state 51
+
+    $default  reduce using rule 11 (argument_list)
+
+
+State 49
+
+   22 method_declaration: PUBLIC TYPE IDENTIFIER OPEN_PAREN argument_list CLOSED_PAREN . OPEN_CURLY method_content RETURN expression SEMICOLON CLOSED_CURLY
+
+    OPEN_CURLY  shift, and go to state 52
+
+
+State 50
+
+    2 MainClass: CLASS IDENTIFIER OPEN_CURLY PUBLIC STATIC VOID MAIN OPEN_PAREN STRING OPEN_BOX CLOSED_BOX IDENTIFIER CLOSED_PAREN OPEN_CURLY . PRINT_FN OPEN_PAREN expression CLOSED_PAREN SEMICOLON CLOSED_CURLY CLOSED_CURLY
+
+    PRINT_FN  shift, and go to state 53
+
+
+State 51
+
+   13 extra_arguments: extra_arguments COMMA . variable_declaration
+
+    IDENTIFIER    shift, and go to state 19
+    INTEGER_TYPE  shift, and go to state 20
+    BOOLEAN_TYPE  shift, and go to state 21
+
+    variable_declaration  go to state 54
+    INBUILT_TYPE          go to state 24
+    TYPE                  go to state 25
+
+
+State 52
+
+   22 method_declaration: PUBLIC TYPE IDENTIFIER OPEN_PAREN argument_list CLOSED_PAREN OPEN_CURLY . method_content RETURN expression SEMICOLON CLOSED_CURLY
+
+    IDENTIFIER    shift, and go to state 55
+    PRINT_FN      shift, and go to state 56
+    INTEGER_TYPE  shift, and go to state 20
+    BOOLEAN_TYPE  shift, and go to state 21
+    IF            shift, and go to state 57
+    WHILE         shift, and go to state 58
+
+    $default  reduce using rule 16 (method_content)
+
+    method_content   go to state 59
+    INBUILT_TYPE     go to state 60
+    other_statement  go to state 61
+
+
+State 53
+
+    2 MainClass: CLASS IDENTIFIER OPEN_CURLY PUBLIC STATIC VOID MAIN OPEN_PAREN STRING OPEN_BOX CLOSED_BOX IDENTIFIER CLOSED_PAREN OPEN_CURLY PRINT_FN . OPEN_PAREN expression CLOSED_PAREN SEMICOLON CLOSED_CURLY CLOSED_CURLY
+
+    OPEN_PAREN  shift, and go to state 62
+
+
+State 54
+
+   13 extra_arguments: extra_arguments COMMA variable_declaration .
+
+    $default  reduce using rule 13 (extra_arguments)
+
+
+State 55
+
+   18 method_content: IDENTIFIER . follows_identifier_in_method
+
+    IDENTIFIER  shift, and go to state 63
+    EQUALS      shift, and go to state 64
+    OPEN_BOX    shift, and go to state 65
+
+    follows_identifier_in_method     go to state 66
+    follows_identifier_in_statement  go to state 67
+
+
+State 56
+
+   30 other_statement: PRINT_FN . OPEN_PAREN expression CLOSED_PAREN SEMICOLON
+
+    OPEN_PAREN  shift, and go to state 68
+
+
+State 57
+
+   32 other_statement: IF . OPEN_PAREN expression CLOSED_PAREN statement ELSE statement
+   33                | IF . OPEN_PAREN expression CLOSED_PAREN statement
+
+    OPEN_PAREN  shift, and go to state 69
+
+
+State 58
+
+   31 other_statement: WHILE . OPEN_PAREN expression CLOSED_PAREN statement
+
+    OPEN_PAREN  shift, and go to state 70
+
+
+State 59
+
+   22 method_declaration: PUBLIC TYPE IDENTIFIER OPEN_PAREN argument_list CLOSED_PAREN OPEN_CURLY method_content . RETURN expression SEMICOLON CLOSED_CURLY
+
+    RETURN  shift, and go to state 71
+
+
+State 60
+
+   17 method_content: INBUILT_TYPE . IDENTIFIER SEMICOLON method_content
+
+    IDENTIFIER  shift, and go to state 72
+
+
+State 61
+
+   19 method_content: other_statement . statement_list
+
+    $default  reduce using rule 28 (statement_list)
+
+    statement_list  go to state 73
+
+
+State 62
+
+    2 MainClass: CLASS IDENTIFIER OPEN_CURLY PUBLIC STATIC VOID MAIN OPEN_PAREN STRING OPEN_BOX CLOSED_BOX IDENTIFIER CLOSED_PAREN OPEN_CURLY PRINT_FN OPEN_PAREN . expression CLOSED_PAREN SEMICOLON CLOSED_CURLY CLOSED_CURLY
+
+    INTEGER_LITERAL  shift, and go to state 74
+    IDENTIFIER       shift, and go to state 75
+    NOT              shift, and go to state 76
+    OPEN_PAREN       shift, and go to state 77
+    TRUE_LITERAL     shift, and go to state 78
+    FALSE_LITERAL    shift, and go to state 79
+    THIS             shift, and go to state 80
+    NEW              shift, and go to state 81
+
+    expression  go to state 82
+    prim_exp    go to state 83
+
+
+State 63
+
+   21 follows_identifier_in_method: IDENTIFIER . SEMICOLON method_content
+
+    SEMICOLON  shift, and go to state 84
+
+
+State 64
+
+   34 follows_identifier_in_statement: EQUALS . expression SEMICOLON
+
+    INTEGER_LITERAL  shift, and go to state 74
+    IDENTIFIER       shift, and go to state 75
+    NOT              shift, and go to state 76
+    OPEN_PAREN       shift, and go to state 77
+    TRUE_LITERAL     shift, and go to state 78
+    FALSE_LITERAL    shift, and go to state 79
+    THIS             shift, and go to state 80
+    NEW              shift, and go to state 81
+
+    expression  go to state 85
+    prim_exp    go to state 83
+
+
+State 65
+
+   35 follows_identifier_in_statement: OPEN_BOX . expression CLOSED_BOX EQUALS expression SEMICOLON
+
+    INTEGER_LITERAL  shift, and go to state 74
+    IDENTIFIER       shift, and go to state 75
+    NOT              shift, and go to state 76
+    OPEN_PAREN       shift, and go to state 77
+    TRUE_LITERAL     shift, and go to state 78
+    FALSE_LITERAL    shift, and go to state 79
+    THIS             shift, and go to state 80
+    NEW              shift, and go to state 81
+
+    expression  go to state 86
+    prim_exp    go to state 83
+
+
+State 66
+
+   18 method_content: IDENTIFIER follows_identifier_in_method .
+
+    $default  reduce using rule 18 (method_content)
+
+
+State 67
+
+   20 follows_identifier_in_method: follows_identifier_in_statement . statement_list
+
+    $default  reduce using rule 28 (statement_list)
+
+    statement_list  go to state 87
+
+
+State 68
+
+   30 other_statement: PRINT_FN OPEN_PAREN . expression CLOSED_PAREN SEMICOLON
+
+    INTEGER_LITERAL  shift, and go to state 74
+    IDENTIFIER       shift, and go to state 75
+    NOT              shift, and go to state 76
+    OPEN_PAREN       shift, and go to state 77
+    TRUE_LITERAL     shift, and go to state 78
+    FALSE_LITERAL    shift, and go to state 79
+    THIS             shift, and go to state 80
+    NEW              shift, and go to state 81
+
+    expression  go to state 88
+    prim_exp    go to state 83
+
+
+State 69
+
+   32 other_statement: IF OPEN_PAREN . expression CLOSED_PAREN statement ELSE statement
+   33                | IF OPEN_PAREN . expression CLOSED_PAREN statement
+
+    INTEGER_LITERAL  shift, and go to state 74
+    IDENTIFIER       shift, and go to state 75
+    NOT              shift, and go to state 76
+    OPEN_PAREN       shift, and go to state 77
+    TRUE_LITERAL     shift, and go to state 78
+    FALSE_LITERAL    shift, and go to state 79
+    THIS             shift, and go to state 80
+    NEW              shift, and go to state 81
+
+    expression  go to state 89
+    prim_exp    go to state 83
+
+
+State 70
+
+   31 other_statement: WHILE OPEN_PAREN . expression CLOSED_PAREN statement
+
+    INTEGER_LITERAL  shift, and go to state 74
+    IDENTIFIER       shift, and go to state 75
+    NOT              shift, and go to state 76
+    OPEN_PAREN       shift, and go to state 77
+    TRUE_LITERAL     shift, and go to state 78
+    FALSE_LITERAL    shift, and go to state 79
+    THIS             shift, and go to state 80
+    NEW              shift, and go to state 81
+
+    expression  go to state 90
+    prim_exp    go to state 83
+
+
+State 71
+
+   22 method_declaration: PUBLIC TYPE IDENTIFIER OPEN_PAREN argument_list CLOSED_PAREN OPEN_CURLY method_content RETURN . expression SEMICOLON CLOSED_CURLY
+
+    INTEGER_LITERAL  shift, and go to state 74
+    IDENTIFIER       shift, and go to state 75
+    NOT              shift, and go to state 76
+    OPEN_PAREN       shift, and go to state 77
+    TRUE_LITERAL     shift, and go to state 78
+    FALSE_LITERAL    shift, and go to state 79
+    THIS             shift, and go to state 80
+    NEW              shift, and go to state 81
+
+    expression  go to state 91
+    prim_exp    go to state 83
+
+
+State 72
+
+   17 method_content: INBUILT_TYPE IDENTIFIER . SEMICOLON method_content
+
+    SEMICOLON  shift, and go to state 92
+
+
+State 73
+
+   19 method_content: other_statement statement_list .
+   29 statement_list: statement_list . statement
+
+    IDENTIFIER  shift, and go to state 93
+    OPEN_CURLY  shift, and go to state 94
+    PRINT_FN    shift, and go to state 56
+    IF          shift, and go to state 57
+    WHILE       shift, and go to state 58
+
+    $default  reduce using rule 19 (method_content)
+
+    other_statement  go to state 95
+    statement        go to state 96
+
+
+State 74
+
+   57 prim_exp: INTEGER_LITERAL .
+
+    $default  reduce using rule 57 (prim_exp)
+
+
+State 75
+
+   60 prim_exp: IDENTIFIER .
+
+    $default  reduce using rule 60 (prim_exp)
+
+
+State 76
+
+   64 prim_exp: NOT . expression
+
+    INTEGER_LITERAL  shift, and go to state 74
+    IDENTIFIER       shift, and go to state 75
+    NOT              shift, and go to state 76
+    OPEN_PAREN       shift, and go to state 77
+    TRUE_LITERAL     shift, and go to state 78
+    FALSE_LITERAL    shift, and go to state 79
+    THIS             shift, and go to state 80
+    NEW              shift, and go to state 81
+
+    expression  go to state 97
+    prim_exp    go to state 83
+
+
+State 77
+
+   65 prim_exp: OPEN_PAREN . expression CLOSED_PAREN
+
+    INTEGER_LITERAL  shift, and go to state 74
+    IDENTIFIER       shift, and go to state 75
+    NOT              shift, and go to state 76
+    OPEN_PAREN       shift, and go to state 77
+    TRUE_LITERAL     shift, and go to state 78
+    FALSE_LITERAL    shift, and go to state 79
+    THIS             shift, and go to state 80
+    NEW              shift, and go to state 81
+
+    expression  go to state 98
+    prim_exp    go to state 83
+
+
+State 78
+
+   58 prim_exp: TRUE_LITERAL .
+
+    $default  reduce using rule 58 (prim_exp)
+
+
+State 79
+
+   59 prim_exp: FALSE_LITERAL .
+
+    $default  reduce using rule 59 (prim_exp)
+
+
+State 80
+
+   61 prim_exp: THIS .
+
+    $default  reduce using rule 61 (prim_exp)
+
+
+State 81
+
+   62 prim_exp: NEW . INTEGER_TYPE OPEN_BOX expression CLOSED_BOX
+   63         | NEW . IDENTIFIER OPEN_PAREN CLOSED_PAREN
+
+    IDENTIFIER    shift, and go to state 99
+    INTEGER_TYPE  shift, and go to state 100
+
+
+State 82
+
+    2 MainClass: CLASS IDENTIFIER OPEN_CURLY PUBLIC STATIC VOID MAIN OPEN_PAREN STRING OPEN_BOX CLOSED_BOX IDENTIFIER CLOSED_PAREN OPEN_CURLY PRINT_FN OPEN_PAREN expression . CLOSED_PAREN SEMICOLON CLOSED_CURLY CLOSED_CURLY
+
+    CLOSED_PAREN  shift, and go to state 101
+
+
+State 83
+
+   44 expression: prim_exp . follows_primexp
+
+    PLUS       shift, and go to state 102
+    MINUS      shift, and go to state 103
+    MULT       shift, and go to state 104
+    DIV        shift, and go to state 105
+    NOT        shift, and go to state 106
+    AND        shift, and go to state 107
+    OR         shift, and go to state 108
+    LESS_THAN  shift, and go to state 109
+    DOT        shift, and go to state 110
+    OPEN_BOX   shift, and go to state 111
+    DOTLENGTH  shift, and go to state 112
+
+    PLUS       [reduce using rule 55 (follows_primexp)]
+    MINUS      [reduce using rule 55 (follows_primexp)]
+    MULT       [reduce using rule 55 (follows_primexp)]
+    DIV        [reduce using rule 55 (follows_primexp)]
+    NOT        [reduce using rule 55 (follows_primexp)]
+    AND        [reduce using rule 55 (follows_primexp)]
+    OR         [reduce using rule 55 (follows_primexp)]
+    LESS_THAN  [reduce using rule 55 (follows_primexp)]
+    DOT        [reduce using rule 55 (follows_primexp)]
+    OPEN_BOX   [reduce using rule 55 (follows_primexp)]
+    DOTLENGTH  [reduce using rule 55 (follows_primexp)]
+    $default   reduce using rule 55 (follows_primexp)
+
+    follows_primexp  go to state 113
+
+
+State 84
+
+   21 follows_identifier_in_method: IDENTIFIER SEMICOLON . method_content
+
+    IDENTIFIER    shift, and go to state 55
+    PRINT_FN      shift, and go to state 56
+    INTEGER_TYPE  shift, and go to state 20
+    BOOLEAN_TYPE  shift, and go to state 21
+    IF            shift, and go to state 57
+    WHILE         shift, and go to state 58
+
+    $default  reduce using rule 16 (method_content)
+
+    method_content   go to state 114
+    INBUILT_TYPE     go to state 60
+    other_statement  go to state 61
+
+
+State 85
+
+   34 follows_identifier_in_statement: EQUALS expression . SEMICOLON
+
+    SEMICOLON  shift, and go to state 115
+
+
+State 86
+
+   35 follows_identifier_in_statement: OPEN_BOX expression . CLOSED_BOX EQUALS expression SEMICOLON
+
+    CLOSED_BOX  shift, and go to state 116
+
+
+State 87
+
+   20 follows_identifier_in_method: follows_identifier_in_statement statement_list .
+   29 statement_list: statement_list . statement
+
+    IDENTIFIER  shift, and go to state 93
+    OPEN_CURLY  shift, and go to state 94
+    PRINT_FN    shift, and go to state 56
+    IF          shift, and go to state 57
+    WHILE       shift, and go to state 58
+
+    $default  reduce using rule 20 (follows_identifier_in_method)
+
+    other_statement  go to state 95
+    statement        go to state 96
+
+
+State 88
+
+   30 other_statement: PRINT_FN OPEN_PAREN expression . CLOSED_PAREN SEMICOLON
+
+    CLOSED_PAREN  shift, and go to state 117
+
+
+State 89
+
+   32 other_statement: IF OPEN_PAREN expression . CLOSED_PAREN statement ELSE statement
+   33                | IF OPEN_PAREN expression . CLOSED_PAREN statement
+
+    CLOSED_PAREN  shift, and go to state 118
+
+
+State 90
+
+   31 other_statement: WHILE OPEN_PAREN expression . CLOSED_PAREN statement
+
+    CLOSED_PAREN  shift, and go to state 119
+
+
+State 91
+
+   22 method_declaration: PUBLIC TYPE IDENTIFIER OPEN_PAREN argument_list CLOSED_PAREN OPEN_CURLY method_content RETURN expression . SEMICOLON CLOSED_CURLY
+
+    SEMICOLON  shift, and go to state 120
+
+
+State 92
+
+   17 method_content: INBUILT_TYPE IDENTIFIER SEMICOLON . method_content
+
+    IDENTIFIER    shift, and go to state 55
+    PRINT_FN      shift, and go to state 56
+    INTEGER_TYPE  shift, and go to state 20
+    BOOLEAN_TYPE  shift, and go to state 21
+    IF            shift, and go to state 57
+    WHILE         shift, and go to state 58
+
+    $default  reduce using rule 16 (method_content)
+
+    method_content   go to state 121
+    INBUILT_TYPE     go to state 60
+    other_statement  go to state 61
+
+
+State 93
+
+   37 statement: IDENTIFIER . follows_identifier_in_statement
+
+    EQUALS    shift, and go to state 64
+    OPEN_BOX  shift, and go to state 65
+
+    follows_identifier_in_statement  go to state 122
+
+
+State 94
+
+   36 statement: OPEN_CURLY . statement_list CLOSED_CURLY
+
+    $default  reduce using rule 28 (statement_list)
+
+    statement_list  go to state 123
+
+
+State 95
+
+   38 statement: other_statement .
+
+    $default  reduce using rule 38 (statement)
+
+
+State 96
+
+   29 statement_list: statement_list statement .
+
+    $default  reduce using rule 29 (statement_list)
+
+
+State 97
+
+   64 prim_exp: NOT expression .
+
+    $default  reduce using rule 64 (prim_exp)
+
+
+State 98
+
+   65 prim_exp: OPEN_PAREN expression . CLOSED_PAREN
+
+    CLOSED_PAREN  shift, and go to state 124
+
+
+State 99
+
+   63 prim_exp: NEW IDENTIFIER . OPEN_PAREN CLOSED_PAREN
+
+    OPEN_PAREN  shift, and go to state 125
+
+
+State 100
+
+   62 prim_exp: NEW INTEGER_TYPE . OPEN_BOX expression CLOSED_BOX
+
+    OPEN_BOX  shift, and go to state 126
+
+
+State 101
+
+    2 MainClass: CLASS IDENTIFIER OPEN_CURLY PUBLIC STATIC VOID MAIN OPEN_PAREN STRING OPEN_BOX CLOSED_BOX IDENTIFIER CLOSED_PAREN OPEN_CURLY PRINT_FN OPEN_PAREN expression CLOSED_PAREN . SEMICOLON CLOSED_CURLY CLOSED_CURLY
+
+    SEMICOLON  shift, and go to state 127
+
+
+State 102
+
+   49 follows_primexp: PLUS . prim_exp
+
+    INTEGER_LITERAL  shift, and go to state 74
+    IDENTIFIER       shift, and go to state 75
+    NOT              shift, and go to state 76
+    OPEN_PAREN       shift, and go to state 77
+    TRUE_LITERAL     shift, and go to state 78
+    FALSE_LITERAL    shift, and go to state 79
+    THIS             shift, and go to state 80
+    NEW              shift, and go to state 81
+
+    prim_exp  go to state 128
+
+
+State 103
+
+   50 follows_primexp: MINUS . prim_exp
+
+    INTEGER_LITERAL  shift, and go to state 74
+    IDENTIFIER       shift, and go to state 75
+    NOT              shift, and go to state 76
+    OPEN_PAREN       shift, and go to state 77
+    TRUE_LITERAL     shift, and go to state 78
+    FALSE_LITERAL    shift, and go to state 79
+    THIS             shift, and go to state 80
+    NEW              shift, and go to state 81
+
+    prim_exp  go to state 129
+
+
+State 104
+
+   51 follows_primexp: MULT . prim_exp
+
+    INTEGER_LITERAL  shift, and go to state 74
+    IDENTIFIER       shift, and go to state 75
+    NOT              shift, and go to state 76
+    OPEN_PAREN       shift, and go to state 77
+    TRUE_LITERAL     shift, and go to state 78
+    FALSE_LITERAL    shift, and go to state 79
+    THIS             shift, and go to state 80
+    NEW              shift, and go to state 81
+
+    prim_exp  go to state 130
+
+
+State 105
+
+   52 follows_primexp: DIV . prim_exp
+
+    INTEGER_LITERAL  shift, and go to state 74
+    IDENTIFIER       shift, and go to state 75
+    NOT              shift, and go to state 76
+    OPEN_PAREN       shift, and go to state 77
+    TRUE_LITERAL     shift, and go to state 78
+    FALSE_LITERAL    shift, and go to state 79
+    THIS             shift, and go to state 80
+    NEW              shift, and go to state 81
+
+    prim_exp  go to state 131
+
+
+State 106
+
+   47 follows_primexp: NOT . EQUALS prim_exp
+
+    EQUALS  shift, and go to state 132
+
+
+State 107
+
+   45 follows_primexp: AND . prim_exp
+
+    INTEGER_LITERAL  shift, and go to state 74
+    IDENTIFIER       shift, and go to state 75
+    NOT              shift, and go to state 76
+    OPEN_PAREN       shift, and go to state 77
+    TRUE_LITERAL     shift, and go to state 78
+    FALSE_LITERAL    shift, and go to state 79
+    THIS             shift, and go to state 80
+    NEW              shift, and go to state 81
+
+    prim_exp  go to state 133
+
+
+State 108
+
+   46 follows_primexp: OR . prim_exp
+
+    INTEGER_LITERAL  shift, and go to state 74
+    IDENTIFIER       shift, and go to state 75
+    NOT              shift, and go to state 76
+    OPEN_PAREN       shift, and go to state 77
+    TRUE_LITERAL     shift, and go to state 78
+    FALSE_LITERAL    shift, and go to state 79
+    THIS             shift, and go to state 80
+    NEW              shift, and go to state 81
+
+    prim_exp  go to state 134
+
+
+State 109
+
+   48 follows_primexp: LESS_THAN . EQUALS prim_exp
+
+    EQUALS  shift, and go to state 135
+
+
+State 110
+
+   56 follows_primexp: DOT . function_call
+
+    IDENTIFIER  shift, and go to state 136
+
+    function_call  go to state 137
+
+
+State 111
+
+   53 follows_primexp: OPEN_BOX . prim_exp CLOSED_BOX
+
+    INTEGER_LITERAL  shift, and go to state 74
+    IDENTIFIER       shift, and go to state 75
+    NOT              shift, and go to state 76
+    OPEN_PAREN       shift, and go to state 77
+    TRUE_LITERAL     shift, and go to state 78
+    FALSE_LITERAL    shift, and go to state 79
+    THIS             shift, and go to state 80
+    NEW              shift, and go to state 81
+
+    prim_exp  go to state 138
+
+
+State 112
+
+   54 follows_primexp: DOTLENGTH .
+
+    $default  reduce using rule 54 (follows_primexp)
+
+
+State 113
+
+   44 expression: prim_exp follows_primexp .
+
+    $default  reduce using rule 44 (expression)
+
+
+State 114
+
+   21 follows_identifier_in_method: IDENTIFIER SEMICOLON method_content .
+
+    $default  reduce using rule 21 (follows_identifier_in_method)
+
+
+State 115
+
+   34 follows_identifier_in_statement: EQUALS expression SEMICOLON .
+
+    $default  reduce using rule 34 (follows_identifier_in_statement)
+
+
+State 116
+
+   35 follows_identifier_in_statement: OPEN_BOX expression CLOSED_BOX . EQUALS expression SEMICOLON
+
+    EQUALS  shift, and go to state 139
+
+
+State 117
+
+   30 other_statement: PRINT_FN OPEN_PAREN expression CLOSED_PAREN . SEMICOLON
+
+    SEMICOLON  shift, and go to state 140
+
+
+State 118
+
+   32 other_statement: IF OPEN_PAREN expression CLOSED_PAREN . statement ELSE statement
+   33                | IF OPEN_PAREN expression CLOSED_PAREN . statement
+
+    IDENTIFIER  shift, and go to state 93
+    OPEN_CURLY  shift, and go to state 94
+    PRINT_FN    shift, and go to state 56
+    IF          shift, and go to state 57
+    WHILE       shift, and go to state 58
+
+    other_statement  go to state 95
+    statement        go to state 141
+
+
+State 119
+
+   31 other_statement: WHILE OPEN_PAREN expression CLOSED_PAREN . statement
+
+    IDENTIFIER  shift, and go to state 93
+    OPEN_CURLY  shift, and go to state 94
+    PRINT_FN    shift, and go to state 56
+    IF          shift, and go to state 57
+    WHILE       shift, and go to state 58
+
+    other_statement  go to state 95
+    statement        go to state 142
+
+
+State 120
+
+   22 method_declaration: PUBLIC TYPE IDENTIFIER OPEN_PAREN argument_list CLOSED_PAREN OPEN_CURLY method_content RETURN expression SEMICOLON . CLOSED_CURLY
+
+    CLOSED_CURLY  shift, and go to state 143
+
+
+State 121
+
+   17 method_content: INBUILT_TYPE IDENTIFIER SEMICOLON method_content .
+
+    $default  reduce using rule 17 (method_content)
+
+
+State 122
+
+   37 statement: IDENTIFIER follows_identifier_in_statement .
+
+    $default  reduce using rule 37 (statement)
+
+
+State 123
+
+   29 statement_list: statement_list . statement
+   36 statement: OPEN_CURLY statement_list . CLOSED_CURLY
+
+    IDENTIFIER    shift, and go to state 93
+    OPEN_CURLY    shift, and go to state 94
+    CLOSED_CURLY  shift, and go to state 144
+    PRINT_FN      shift, and go to state 56
+    IF            shift, and go to state 57
+    WHILE         shift, and go to state 58
+
+    other_statement  go to state 95
+    statement        go to state 96
+
+
+State 124
+
+   65 prim_exp: OPEN_PAREN expression CLOSED_PAREN .
+
+    $default  reduce using rule 65 (prim_exp)
+
+
+State 125
+
+   63 prim_exp: NEW IDENTIFIER OPEN_PAREN . CLOSED_PAREN
+
+    CLOSED_PAREN  shift, and go to state 145
+
+
+State 126
+
+   62 prim_exp: NEW INTEGER_TYPE OPEN_BOX . expression CLOSED_BOX
+
+    INTEGER_LITERAL  shift, and go to state 74
+    IDENTIFIER       shift, and go to state 75
+    NOT              shift, and go to state 76
+    OPEN_PAREN       shift, and go to state 77
+    TRUE_LITERAL     shift, and go to state 78
+    FALSE_LITERAL    shift, and go to state 79
+    THIS             shift, and go to state 80
+    NEW              shift, and go to state 81
+
+    expression  go to state 146
+    prim_exp    go to state 83
+
+
+State 127
+
+    2 MainClass: CLASS IDENTIFIER OPEN_CURLY PUBLIC STATIC VOID MAIN OPEN_PAREN STRING OPEN_BOX CLOSED_BOX IDENTIFIER CLOSED_PAREN OPEN_CURLY PRINT_FN OPEN_PAREN expression CLOSED_PAREN SEMICOLON . CLOSED_CURLY CLOSED_CURLY
+
+    CLOSED_CURLY  shift, and go to state 147
+
+
+State 128
+
+   49 follows_primexp: PLUS prim_exp .
+
+    $default  reduce using rule 49 (follows_primexp)
+
+
+State 129
+
+   50 follows_primexp: MINUS prim_exp .
+
+    $default  reduce using rule 50 (follows_primexp)
+
+
+State 130
+
+   51 follows_primexp: MULT prim_exp .
+
+    $default  reduce using rule 51 (follows_primexp)
+
+
+State 131
+
+   52 follows_primexp: DIV prim_exp .
+
+    $default  reduce using rule 52 (follows_primexp)
+
+
+State 132
+
+   47 follows_primexp: NOT EQUALS . prim_exp
+
+    INTEGER_LITERAL  shift, and go to state 74
+    IDENTIFIER       shift, and go to state 75
+    NOT              shift, and go to state 76
+    OPEN_PAREN       shift, and go to state 77
+    TRUE_LITERAL     shift, and go to state 78
+    FALSE_LITERAL    shift, and go to state 79
+    THIS             shift, and go to state 80
+    NEW              shift, and go to state 81
+
+    prim_exp  go to state 148
+
+
+State 133
+
+   45 follows_primexp: AND prim_exp .
+
+    $default  reduce using rule 45 (follows_primexp)
+
+
+State 134
+
+   46 follows_primexp: OR prim_exp .
+
+    $default  reduce using rule 46 (follows_primexp)
+
+
+State 135
+
+   48 follows_primexp: LESS_THAN EQUALS . prim_exp
+
+    INTEGER_LITERAL  shift, and go to state 74
+    IDENTIFIER       shift, and go to state 75
+    NOT              shift, and go to state 76
+    OPEN_PAREN       shift, and go to state 77
+    TRUE_LITERAL     shift, and go to state 78
+    FALSE_LITERAL    shift, and go to state 79
+    THIS             shift, and go to state 80
+    NEW              shift, and go to state 81
+
+    prim_exp  go to state 149
+
+
+State 136
+
+   39 function_call: IDENTIFIER . OPEN_PAREN parameter_list CLOSED_PAREN
+
+    OPEN_PAREN  shift, and go to state 150
+
+
+State 137
+
+   56 follows_primexp: DOT function_call .
+
+    $default  reduce using rule 56 (follows_primexp)
+
+
+State 138
+
+   53 follows_primexp: OPEN_BOX prim_exp . CLOSED_BOX
+
+    CLOSED_BOX  shift, and go to state 151
+
+
+State 139
+
+   35 follows_identifier_in_statement: OPEN_BOX expression CLOSED_BOX EQUALS . expression SEMICOLON
+
+    INTEGER_LITERAL  shift, and go to state 74
+    IDENTIFIER       shift, and go to state 75
+    NOT              shift, and go to state 76
+    OPEN_PAREN       shift, and go to state 77
+    TRUE_LITERAL     shift, and go to state 78
+    FALSE_LITERAL    shift, and go to state 79
+    THIS             shift, and go to state 80
+    NEW              shift, and go to state 81
+
+    expression  go to state 152
+    prim_exp    go to state 83
+
+
+State 140
+
+   30 other_statement: PRINT_FN OPEN_PAREN expression CLOSED_PAREN SEMICOLON .
+
+    $default  reduce using rule 30 (other_statement)
+
+
+State 141
+
+   32 other_statement: IF OPEN_PAREN expression CLOSED_PAREN statement . ELSE statement
+   33                | IF OPEN_PAREN expression CLOSED_PAREN statement .
+
+    ELSE  shift, and go to state 153
+
+    $default  reduce using rule 33 (other_statement)
+
+
+State 142
+
+   31 other_statement: WHILE OPEN_PAREN expression CLOSED_PAREN statement .
+
+    $default  reduce using rule 31 (other_statement)
+
+
+State 143
+
+   22 method_declaration: PUBLIC TYPE IDENTIFIER OPEN_PAREN argument_list CLOSED_PAREN OPEN_CURLY method_content RETURN expression SEMICOLON CLOSED_CURLY .
+
+    $default  reduce using rule 22 (method_declaration)
+
+
+State 144
+
+   36 statement: OPEN_CURLY statement_list CLOSED_CURLY .
+
+    $default  reduce using rule 36 (statement)
+
+
+State 145
+
+   63 prim_exp: NEW IDENTIFIER OPEN_PAREN CLOSED_PAREN .
+
+    $default  reduce using rule 63 (prim_exp)
+
+
+State 146
+
+   62 prim_exp: NEW INTEGER_TYPE OPEN_BOX expression . CLOSED_BOX
+
+    CLOSED_BOX  shift, and go to state 154
+
+
+State 147
+
+    2 MainClass: CLASS IDENTIFIER OPEN_CURLY PUBLIC STATIC VOID MAIN OPEN_PAREN STRING OPEN_BOX CLOSED_BOX IDENTIFIER CLOSED_PAREN OPEN_CURLY PRINT_FN OPEN_PAREN expression CLOSED_PAREN SEMICOLON CLOSED_CURLY . CLOSED_CURLY
+
+    CLOSED_CURLY  shift, and go to state 155
+
+
+State 148
+
+   47 follows_primexp: NOT EQUALS prim_exp .
+
+    $default  reduce using rule 47 (follows_primexp)
+
+
+State 149
+
+   48 follows_primexp: LESS_THAN EQUALS prim_exp .
+
+    $default  reduce using rule 48 (follows_primexp)
+
+
+State 150
+
+   39 function_call: IDENTIFIER OPEN_PAREN . parameter_list CLOSED_PAREN
+
+    INTEGER_LITERAL  shift, and go to state 74
+    IDENTIFIER       shift, and go to state 75
+    NOT              shift, and go to state 76
+    OPEN_PAREN       shift, and go to state 77
+    TRUE_LITERAL     shift, and go to state 78
+    FALSE_LITERAL    shift, and go to state 79
+    THIS             shift, and go to state 80
+    NEW              shift, and go to state 81
+
+    $default  reduce using rule 40 (parameter_list)
+
+    parameter_list  go to state 156
+    expression      go to state 157
+    prim_exp        go to state 83
+
+
+State 151
+
+   53 follows_primexp: OPEN_BOX prim_exp CLOSED_BOX .
+
+    $default  reduce using rule 53 (follows_primexp)
+
+
+State 152
+
+   35 follows_identifier_in_statement: OPEN_BOX expression CLOSED_BOX EQUALS expression . SEMICOLON
+
+    SEMICOLON  shift, and go to state 158
+
+
+State 153
+
+   32 other_statement: IF OPEN_PAREN expression CLOSED_PAREN statement ELSE . statement
+
+    IDENTIFIER  shift, and go to state 93
+    OPEN_CURLY  shift, and go to state 94
+    PRINT_FN    shift, and go to state 56
+    IF          shift, and go to state 57
+    WHILE       shift, and go to state 58
+
+    other_statement  go to state 95
+    statement        go to state 159
+
+
+State 154
+
+   62 prim_exp: NEW INTEGER_TYPE OPEN_BOX expression CLOSED_BOX .
+
+    $default  reduce using rule 62 (prim_exp)
+
+
+State 155
+
+    2 MainClass: CLASS IDENTIFIER OPEN_CURLY PUBLIC STATIC VOID MAIN OPEN_PAREN STRING OPEN_BOX CLOSED_BOX IDENTIFIER CLOSED_PAREN OPEN_CURLY PRINT_FN OPEN_PAREN expression CLOSED_PAREN SEMICOLON CLOSED_CURLY CLOSED_CURLY .
+
+    $default  reduce using rule 2 (MainClass)
+
+
+State 156
+
+   39 function_call: IDENTIFIER OPEN_PAREN parameter_list . CLOSED_PAREN
+
+    CLOSED_PAREN  shift, and go to state 160
+
+
+State 157
+
+   41 parameter_list: expression . extra_parameter_list
+
+    $default  reduce using rule 42 (extra_parameter_list)
+
+    extra_parameter_list  go to state 161
+
+
+State 158
+
+   35 follows_identifier_in_statement: OPEN_BOX expression CLOSED_BOX EQUALS expression SEMICOLON .
+
+    $default  reduce using rule 35 (follows_identifier_in_statement)
+
+
+State 159
+
+   32 other_statement: IF OPEN_PAREN expression CLOSED_PAREN statement ELSE statement .
+
+    $default  reduce using rule 32 (other_statement)
+
+
+State 160
+
+   39 function_call: IDENTIFIER OPEN_PAREN parameter_list CLOSED_PAREN .
+
+    $default  reduce using rule 39 (function_call)
+
+
+State 161
+
+   41 parameter_list: expression extra_parameter_list .
+   43 extra_parameter_list: extra_parameter_list . COMMA expression
+
+    COMMA  shift, and go to state 162
+
+    $default  reduce using rule 41 (parameter_list)
+
+
+State 162
+
+   43 extra_parameter_list: extra_parameter_list COMMA . expression
+
+    INTEGER_LITERAL  shift, and go to state 74
+    IDENTIFIER       shift, and go to state 75
+    NOT              shift, and go to state 76
+    OPEN_PAREN       shift, and go to state 77
+    TRUE_LITERAL     shift, and go to state 78
+    FALSE_LITERAL    shift, and go to state 79
+    THIS             shift, and go to state 80
+    NEW              shift, and go to state 81
+
+    expression  go to state 163
+    prim_exp    go to state 83
+
+
+State 163
+
+   43 extra_parameter_list: extra_parameter_list COMMA expression .
+
+    $default  reduce using rule 43 (extra_parameter_list)
